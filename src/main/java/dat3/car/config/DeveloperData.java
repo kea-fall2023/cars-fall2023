@@ -16,7 +16,6 @@ public class DeveloperData implements ApplicationRunner {
   MemberRepository memberRepository;
   CarRepository carRepository;
 
-
   public DeveloperData(MemberRepository memberRepository, CarRepository carRepository) {
     this.memberRepository = memberRepository;
     this.carRepository = carRepository;
