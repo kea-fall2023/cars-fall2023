@@ -3,7 +3,6 @@ package dat3.car.api;
 import dat3.car.dto.MemberRequest;
 import dat3.car.dto.MemberResponse;
 import dat3.car.service.MemberService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,13 +38,13 @@ class MemberController {
 
     //Security Admin
     @PutMapping("/{username}")
-    ResponseEntity<Boolean> editMember(@RequestBody MemberRequest body, @PathVariable String username){
-        return memberService.editMember(body,username);
+    void editMember(@RequestBody MemberRequest body, @PathVariable String username){
+        memberService.editMember(body,username);
     }
     //Security ADMIN
     @PatchMapping("/ranking/{username}/{value}")
-    ResponseEntity<Boolean> setRankingForUser(@PathVariable String username, @PathVariable int value) {
-      return memberService.setRankingForUser(username,value);
+    void setRankingForUser(@PathVariable String username, @PathVariable int value) {
+       memberService.setRankingForUser(username,value);
     }
 
     // Security ADMIN

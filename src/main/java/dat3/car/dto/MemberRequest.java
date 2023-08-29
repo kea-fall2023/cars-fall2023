@@ -1,9 +1,7 @@
 package dat3.car.dto;
 
 import dat3.car.entity.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter

@@ -5,7 +5,6 @@ import dat3.car.dto.MemberResponse;
 import dat3.car.entity.Member;
 import dat3.car.repository.MemberRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,12 +39,11 @@ public class MemberService {
            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST,"This user already exists");
         }
        Member newMember = MemberRequest.getMemberEntity(body);
-
        newMember = memberRepository.save(newMember);
        return new MemberResponse(newMember,true);
     }
 
-    public ResponseEntity<Boolean> editMember(MemberRequest body, String username) {
+    public void editMember(MemberRequest body, String username) {
         Member member = getMemberByUsername(username);
         if(!body.getUsername().equals(username)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cannot change username");
@@ -58,15 +56,13 @@ public class MemberService {
         member.setCity(body.getCity());
         member.setZip(body.getZip());
         memberRepository.save(member);
-        return ResponseEntity.ok(true);
     }
 
 
-    public ResponseEntity<Boolean> setRankingForUser(String username, int value) {
+    public void setRankingForUser(String username, int value) {
         Member member = getMemberByUsername(username);
         member.setRanking(value);
         memberRepository.save(member);
-        return ResponseEntity.ok(true);
     }
 
     private Member getMemberByUsername(String username){
