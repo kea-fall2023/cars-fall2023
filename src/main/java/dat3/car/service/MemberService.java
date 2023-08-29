@@ -21,7 +21,6 @@ public class MemberService {
     }
 
     public List<MemberResponse> getMembers(boolean includeAll  ) {
-
         List<Member> members = memberRepository.findAll();
         List<MemberResponse> response = new ArrayList<>();
         for(Member member: members){
@@ -29,7 +28,11 @@ public class MemberService {
             response.add(mr);
         }
         return response;
+    }
 
+    public MemberResponse findById(String username) {
+        Member member = getMemberByUsername(username);
+        return new MemberResponse(member,true);
     }
 
     public MemberResponse addMember(MemberRequest body) {
@@ -43,8 +46,7 @@ public class MemberService {
     }
 
     public ResponseEntity<Boolean> editMember(MemberRequest body, String username) {
-        Member member = memberRepository.findById(username).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Member with this username does not exist"));
+        Member member = getMemberByUsername(username);
         if(!body.getUsername().equals(username)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cannot change username");
         }
@@ -59,9 +61,21 @@ public class MemberService {
         return ResponseEntity.ok(true);
     }
 
-    public MemberResponse findById(String username) {
-        Member member = memberRepository.findById(username).
+
+    public ResponseEntity<Boolean> setRankingForUser(String username, int value) {
+        Member member = getMemberByUsername(username);
+        member.setRanking(value);
+        memberRepository.save(member);
+        return ResponseEntity.ok(true);
+    }
+
+    private Member getMemberByUsername(String username){
+        return memberRepository.findById(username).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Member with this username does not exist"));
-        return new MemberResponse(member,true);
+    }
+
+    public void deleteMemberByUsername(String username) {
+        Member member = getMemberByUsername(username);
+        memberRepository.delete(member);
     }
 }
