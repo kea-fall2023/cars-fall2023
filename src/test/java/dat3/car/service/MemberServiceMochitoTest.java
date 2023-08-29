@@ -63,9 +63,9 @@ class MemberServiceMockitoTest {
   @Test
   public void testFindById() {
     when(memberRepository.findById("user1")).thenReturn(Optional.of(makeMember("user1", "pw1", "fn1", "ln1", "email1", "street1", "city1", "zip1")));
-    MemberResponse response = memberService.findById("testUser");
+    MemberResponse response = memberService.findById("user1");
     // Assertions
-    assertEquals("testUser", response.getUsername());
+    assertEquals("user1", response.getUsername());
     assertNotNull(response.getRanking(), "Expected ranking to be set, since true was used inside findById");
   }
 
@@ -126,6 +126,29 @@ class MemberServiceMockitoTest {
 
 
   @Test
-  void deleteMemberByUsername() {
+  public void testDeleteMemberByUsername() {
+    String testUsername = "testUser";
+    Member testMember = new Member();
+    testMember.setUsername(testUsername);
+
+    // Mock the behavior of memberRepository to return the testMember when findById is called with testUsername.
+    when(memberRepository.findById(testUsername)).thenReturn(Optional.of(testMember));
+
+    // Call the method under test.
+    memberService.deleteMemberByUsername(testUsername);
+
+    // Verify that memberRepository's delete method was called with the testMember.
+    verify(memberRepository).delete(testMember);
+  }
+
+  @Test
+  public void testDeleteMemberByUsername_MemberNotFound() {
+    String testUsername = "testUser";
+
+    // Mock the behavior of memberRepository to return an empty Optional when findById is called with testUsername.
+    when(memberRepository.findById(testUsername)).thenReturn(Optional.empty());
+
+    // Assert that the method throws a ResponseStatusException with a BAD_REQUEST status.
+    assertThrows(ResponseStatusException.class, () -> memberService.deleteMemberByUsername(testUsername));
   }
 }
