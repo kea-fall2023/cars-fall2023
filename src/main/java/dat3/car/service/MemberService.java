@@ -65,13 +65,13 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    private Member getMemberByUsername(String username){
-        return memberRepository.findById(username).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Member with this username does not exist"));
-    }
-
     public void deleteMemberByUsername(String username) {
         Member member = getMemberByUsername(username);
         memberRepository.delete(member);
+    }
+
+    private Member getMemberByUsername(String username){
+        return memberRepository.findById(username).
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Member with this username does not exist"));
     }
 }

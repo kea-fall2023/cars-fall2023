@@ -6,6 +6,8 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor //A must for @Builder
+@Builder
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberRequest {
     String username;
