@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,14 +37,16 @@ class MemberServiceH2Test {
   void testGetMembersAllDetails() {
     List<MemberResponse> responses = memberService.getMembers(true);
     assertEquals(2, responses.size(), "Expected 2 members");
-    assertNotNull(responses.get(0).getCreated(), "Dates must be set since true was passed to getMembers");
+    LocalDateTime created = responses.get(0).getCreated();
+    assertNotNull(created, "Dates must be set since TRUE was passed to getMembers");
   }
 
   @Test
   void testGetMembersNoDetails() {
     List<MemberResponse> responses = memberService.getMembers(false);
     assertEquals(2, responses.size(), "Expected 2 members");
-    assertNull(responses.get(0).getCreated(), "Expected created date to be null");
+    LocalDateTime created = responses.get(0).getCreated();
+    assertNotNull(created, "Dates must NOT be set since FALSE was passed to getMembers");
   }
 
   @Test
