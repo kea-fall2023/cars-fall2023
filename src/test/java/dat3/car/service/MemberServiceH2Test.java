@@ -46,7 +46,7 @@ class MemberServiceH2Test {
     List<MemberResponse> responses = memberService.getMembers(false);
     assertEquals(2, responses.size(), "Expected 2 members");
     LocalDateTime created = responses.get(0).getCreated();
-    assertNotNull(created, "Dates must NOT be set since FALSE was passed to getMembers");
+    assertNull(created, "Dates must NOT be set since FALSE was passed to getMembers");
   }
 
   @Test
