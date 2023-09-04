@@ -57,6 +57,7 @@ class CarServiceH2Test {
   @Test
   void findCarById() {
     CarResponse response = carService.findCarById(car1.getId(),true);
+    assertEquals(car1.getId(), response.getId());
     assertEquals(car1.getBrand(), response.getBrand());
     assertEquals(car1.getModel(), response.getModel());
     assertEquals(car1.getPricePrDay(), response.getPricePrDay());
