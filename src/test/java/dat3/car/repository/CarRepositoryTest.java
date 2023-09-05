@@ -6,36 +6,71 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 class CarRepositoryTest {
 
     @Autowired
     CarRepository carRepository;
-    boolean dataInitialized = false;
-    int car1Id, car2Id;
+
+    boolean dataIsInitialized = false;
+    double averagePriceForAllCars;
     @BeforeEach
     void setUp() {
-        if(!dataInitialized){
-            Car car1 = carRepository.save(new Car("Volvo","V70",1999,20));
-            car1Id = car1.getId();
-            Car car2 = carRepository.save(new Car("XXX","YYY",100,20));
-            car2Id = car2.getId();
-        }
+        if(dataIsInitialized)
+            return;
+        List<Car> cars = new ArrayList<>(Arrays.asList(
+                Car.builder().brand("Suzuki").model("Swift").pricePrDay(350).bestDiscount(28).build(),
+                Car.builder().brand("Kia").model("Optima").pricePrDay(450).bestDiscount(18).build(),
+                Car.builder().brand("WW").model("Wagon").pricePrDay(400).bestDiscount(20).build(),
+                Car.builder().brand("Volvo").model("S80").pricePrDay(600).bestDiscount(12).build(),
+                Car.builder().brand("Suzuki").model("SX4").pricePrDay(400).bestDiscount(16).build(),
+                Car.builder().brand("Suzuki").model("SX4").pricePrDay(400).bestDiscount(16).build(),
+                Car.builder().brand("Suzuki").model("SX4").pricePrDay(400).bestDiscount(7).build(),
+                Car.builder().brand("Kia").model("Sorento").pricePrDay(500).bestDiscount(22).build(),
+                Car.builder().brand("WW").model("Pickup").pricePrDay(450).bestDiscount(28).build(),
+                Car.builder().brand("Volvo").model("V60").pricePrDay(700).bestDiscount(15).build(),
+                Car.builder().brand("Suzuki").model("Grand Vitara").pricePrDay(450).bestDiscount(12).build()));
+        carRepository.saveAllAndFlush(cars);
+        averagePriceForAllCars = cars.stream().mapToDouble(Car::getPricePrDay).average().orElse(0);
+        dataIsInitialized = true;
     }
 
     @Test
-    public void testById() {
-        Car car1 = carRepository.findById(car1Id).get();
-        assertEquals("Volvo", car1.getBrand());
+    void findByBrandAndModel() {
+        assertEquals(3,carRepository.findByBrandAndModel("Suzuki","SX4").size());
     }
+
     @Test
-    public void testCount() {
-        assertEquals(2, carRepository.count());
+    void findNothingByBrandAndModel() {
+        assertEquals(0,carRepository.findByBrandAndModel("Suzuki","I Dont Exist").size());
     }
+
     @Test
-    public void testGetByBrand() {
-        assertEquals(1, carRepository.getByBrand("Volvo").size());
+    void findAveragePriceForAllCars(){
+        double delta = 0.001;
+        assertEquals(averagePriceForAllCars,carRepository.avrPricePrDay(),delta);
     }
+
+    @Test
+    void findCarsWithNoReservations(){
+        int allCars = carRepository.findAll().size();
+        assertEquals(allCars,carRepository.findByReservationsIsEmpty().size(),"No cars are reserved, so cars to be returned");
+    }
+
+    @Test
+    public void findCarsWithHighestDiscount(){
+        List<Car> cars = carRepository.findAllByBestDiscount();
+        assertEquals(2,cars.size());
+        List<String> carBrands = cars.stream().map(Car::getBrand).toList();
+        assertThat(carBrands,containsInAnyOrder("Suzuki","WW"));
+    }
+
 }

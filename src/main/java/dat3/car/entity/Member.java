@@ -2,9 +2,13 @@ package dat3.car.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +29,13 @@ public class Member extends AdminDetails  {
   private boolean approved;
   private int ranking;
 
+  @OneToMany(mappedBy = "member")
+  private List<Reservation> reservations = new ArrayList<>();
+
+  public void addReservation(Reservation reservation){
+    reservations.add(reservation);
+    reservation.setMember(this);
+  }
 
   public Member(String user, String password, String email,
                 String firstName, String lastName, String street, String city, String zip) {

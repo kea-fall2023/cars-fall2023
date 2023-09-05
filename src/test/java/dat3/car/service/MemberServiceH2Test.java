@@ -35,7 +35,7 @@ class MemberServiceH2Test {
 
   @Test
   void testGetMembersAllDetails() {
-    List<MemberResponse> responses = memberService.getMembers(true);
+    List<MemberResponse> responses = memberService.getMembers(true, false);
     assertEquals(2, responses.size(), "Expected 2 members");
     LocalDateTime created = responses.get(0).getCreated();
     assertNotNull(created, "Dates must be set since TRUE was passed to getMembers");
@@ -43,7 +43,7 @@ class MemberServiceH2Test {
 
   @Test
   void testGetMembersNoDetails() {
-    List<MemberResponse> responses = memberService.getMembers(false);
+    List<MemberResponse> responses = memberService.getMembers(false,false);
     assertEquals(2, responses.size(), "Expected 2 members");
     LocalDateTime created = responses.get(0).getCreated();
     assertNull(created, "Dates must NOT be set since FALSE was passed to getMembers");

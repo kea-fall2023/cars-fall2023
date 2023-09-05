@@ -54,7 +54,7 @@ class MemberServiceMockitoTest {
     Member m1 = makeMember("user1", "pw1", "fn1", "ln1", "email1", "street1", "city1", "zip1");
     Member m2 = makeMember("user2", "pw2", "fn2", "ln2", "email2", "street2", "city2", "zip2");
     when(memberRepository.findAll()).thenReturn(List.of(m1, m2));
-    List<MemberResponse> responses = memberService.getMembers(true);
+    List<MemberResponse> responses = memberService.getMembers(true, false);
     // Assertions
     assertEquals(2, responses.size(), "Expected 2 members");
     assertNotNull(responses.get(0).getCreated(), "Dates must be set since true was passed to getMembers");

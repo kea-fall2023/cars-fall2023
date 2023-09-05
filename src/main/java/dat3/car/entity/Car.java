@@ -3,6 +3,9 @@ package dat3.car.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,6 +28,16 @@ public class Car extends AdminDetails {
   @Column(name = "max_discount")
   private Integer bestDiscount;
 
+  @OneToMany(mappedBy = "carToRent")
+  private List<Reservation> reservations;
+
+  public void addReservation(Reservation reservation){
+    if(reservations == null){
+      reservations = new ArrayList<>();
+    }
+    reservations.add(reservation);
+    reservation.setCarToRent(this);
+  }
 
   public Car(String brand, String model, double pricePrDay, Integer bestDiscount) {
     this.brand = brand;
