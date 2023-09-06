@@ -12,8 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class ReservationRepositoryTest {
@@ -50,6 +49,12 @@ class ReservationRepositoryTest {
   void existsByCarIdAndRentalDate() {
    boolean found = reservationRepository.existsByCarToRentIdAndRentalDate(carId,LocalDate.of(2028,8,11));
    assertTrue(found);
+  }
+
+  @Test
+  void existsByCarIdAndRentalDate_NotFound() {
+    boolean found = reservationRepository.existsByCarToRentIdAndRentalDate(carId,LocalDate.of(2028,10,11));
+    assertFalse(found);
   }
 
   @Test

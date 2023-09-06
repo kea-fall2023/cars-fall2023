@@ -9,6 +9,7 @@ import java.util.List;
 public interface  ReservationRepository extends JpaRepository<Reservation,Integer> {
 
   boolean existsByCarToRentIdAndRentalDate(int carId, LocalDate date);
+
   Long countReservationsByMemberUsername(String username);
 
   List<Reservation> findReservationByMemberUsername(String username);
