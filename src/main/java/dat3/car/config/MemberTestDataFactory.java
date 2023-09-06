@@ -17,7 +17,7 @@ password allways test12
 The remaining parts should include real names and danish addresses
  */
 public class MemberTestDataFactory {
-  public static List<Member> generateTestMembers(String passwordUsedByAll) {
+  public static List<Member> generateTestMembers(String passwordUsedByAll,int numberOfMembers) {
     List<Member> members = new ArrayList<>();
 
     String[] firstNames = {"Anders", "Bent", "Christine", "Dorte", "Erik", "Freja", "Gustav", "Helle", "Inge", "Jens"};
@@ -26,7 +26,7 @@ public class MemberTestDataFactory {
     String[] cities = {"København", "Aarhus", "Odense", "Aalborg", "Esbjerg", "Randers", "Kolding", "Horsens", "Vejle", "Roskilde"};
     String[] zips = {"1000", "8000", "5000", "9000", "6700", "8900", "6000", "8700", "7100", "4000"};
 
-    for (int i = 1; i <= 50; i++) {
+    for (int i = 1; i <= numberOfMembers; i++) {
       String user = "member" + i;
       String password = passwordUsedByAll;
       String email = user + "@testmail.com";
