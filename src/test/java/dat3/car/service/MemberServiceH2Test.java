@@ -70,6 +70,7 @@ class MemberServiceH2Test {
     MemberRequest request = MemberRequest.builder().
             username("user3").
             password("pw3").
+            email("aa@bb.dk").
             firstName("fn3").
             lastName("ln3").
             build();
