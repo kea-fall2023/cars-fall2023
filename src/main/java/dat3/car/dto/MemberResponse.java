@@ -6,6 +6,7 @@ import dat3.car.entity.Member;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,8 @@ public class MemberResponse {
     //@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss",shape = JsonFormat.Shape.STRING)
     LocalDateTime created;
 
+    List<ReservationResponse> reservations;
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss",shape = JsonFormat.Shape.STRING)
     LocalDateTime edited;
     Integer ranking;
@@ -45,6 +48,13 @@ public class MemberResponse {
             this.edited = m.getEdited();
             this.approved = m.isApproved();
             this.ranking = m.getRanking();
+        }
+    }
+
+    public MemberResponse(Member m, boolean includeAll,boolean includeReservations) {
+        this(m,includeAll); //Call the two argument constructor
+        if(includeReservations){
+            this.reservations = m.getReservations().stream().map(ReservationResponse::new).toList();
         }
     }
 }

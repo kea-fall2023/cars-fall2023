@@ -35,7 +35,7 @@ public class DeveloperData implements ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    List<Member> members = MemberTestDataFactory.generateTestMembers("test12",5);
+    List<Member> members = MemberTestDataFactory.generateTestMembers("test12",2);
     memberRepository.saveAll(members);
     List<Car> cars = CarTestDataFactory.generateTestCars();
     carRepository.saveAll(cars);
