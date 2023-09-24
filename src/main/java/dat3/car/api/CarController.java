@@ -24,10 +24,22 @@ public class CarController {
     return carService.getCars(false); //false --> Only info relevant for customers
   }
 
+  //Security ADMIN
+  @GetMapping("/admin")
+  List<CarResponse> getCarsAll(){
+    return carService.getCars(true); //false --> Only info relevant for customers
+  }
+
   //Security ANONYMOUS
   @GetMapping(path = "/{id}")
   CarResponse getCarById(@PathVariable int id) {
     return carService.findCarById(id, false);
+  }
+
+  //Security ADMIN
+  @GetMapping(path = "admin/{id}")
+  CarResponse getCarByIdAll(@PathVariable int id) {
+    return carService.findCarById(id, true);
   }
 
   //Security ADMIN
@@ -38,7 +50,7 @@ public class CarController {
 
   //Security ADMIN  ONLY
   @PutMapping("/{id}")
-  CarResponse editMember(@RequestBody CarRequest body, @PathVariable int id){
+  CarResponse editCar(@RequestBody CarRequest body, @PathVariable int id){
     return carService.editCar(body, id);
   }
 
@@ -47,9 +59,10 @@ public class CarController {
   void setPrice(@PathVariable int id, @PathVariable double newPrice) {
     carService.setPrice(id, newPrice);
   }
+
   //Security ADMIN ONLY
   @PatchMapping("/discount/{id}/{newDiscount}")
-  void setPrice(@PathVariable int id, @PathVariable int newDiscount) {
+  void setDiscount(@PathVariable int id, @PathVariable int newDiscount) {
     carService.setDiscount(id, newDiscount);
   }
 

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -41,4 +43,14 @@ public class ReservationService {
     return  new ReservationResponse(res);
   }
 
+  public List<ReservationResponse> getReservations(){
+    List<Reservation> reservations = reservationRepository.findAll();
+    List<ReservationResponse> response = reservations.stream().map(res-> new ReservationResponse(res)).collect(Collectors.toList());
+    return response;
+  }
+  public List<ReservationResponse> getReservationsForUser(String username) {
+    Member member = memberRepository.findById(username).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User Not Found"));
+    List<ReservationResponse> reservations = member.getReservations().stream().map(r->new ReservationResponse(r)).toList();
+    return reservations;
+  }
 }
