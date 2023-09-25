@@ -18,6 +18,7 @@ public class ReservationResponse {
   String model;
   //@JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
   LocalDate reservationDate;
+  double pricePrDay;
 
   public ReservationResponse(Reservation reservation) {
     this.id = reservation.getId();
@@ -25,5 +26,6 @@ public class ReservationResponse {
     this.brand = reservation.getCar().getBrand();
     this.model = reservation.getCar().getModel();
     this.reservationDate = reservation.getRentalDate();
+    this.pricePrDay = reservation.getCar().getPricePrDay();
   }
 }
